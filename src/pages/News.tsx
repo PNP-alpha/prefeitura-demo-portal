@@ -1,9 +1,15 @@
-import { Calendar, User, ArrowRight } from "lucide-react";
+import { Calendar, User, ArrowRight, Eye, MessageCircle, Share2, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SearchBar from "@/components/SearchBar";
+import { useState } from "react";
 
 const News = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   const news = [
     {
       id: 1,
@@ -14,42 +20,104 @@ const News = () => {
       author: "Assessoria de Imprensa",
       category: "Obras",
       image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      featured: true
+      featured: true,
+      views: 2450,
+      comments: 23,
+      shares: 45,
+      readTime: "3 min"
     },
     {
       id: 2,
-      title: "Campanha de Vacinação Contra a Gripe",
+      title: "Campanha de Vacinação Contra a Gripe 2024 - Agendamento Online",
       summary: "Inicia na próxima segunda-feira a campanha anual de vacinação contra influenza para toda a população.",
       content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
       date: "2024-01-10",
       author: "Secretaria de Saúde",
       category: "Saúde",
       image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      featured: false
+      featured: false,
+      views: 1890,
+      comments: 18,
+      shares: 32,
+      readTime: "2 min"
     },
     {
       id: 3,
-      title: "Novo Sistema de Coleta Seletiva",
+      title: "Novo Sistema de Coleta Seletiva em Toda a Cidade",
       summary: "A cidade implementa novo sistema de coleta seletiva para melhorar a sustentabilidade urbana.",
       content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
       date: "2024-01-05",
       author: "Secretaria do Meio Ambiente",
       category: "Meio Ambiente",
       image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      featured: false
+      featured: false,
+      views: 1234,
+      comments: 12,
+      shares: 28,
+      readTime: "4 min"
     },
     {
       id: 4,
-      title: "Inscrições Abertas para Cursos Profissionalizantes",
+      title: "Inscrições Abertas para Cursos Profissionalizantes Gratuitos",
       summary: "Prefeitura oferece cursos gratuitos de capacitação profissional para a comunidade.",
       content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
       date: "2023-12-28",
       author: "Secretaria de Educação",
       category: "Educação",
       image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      featured: false
+      featured: false,
+      views: 876,
+      comments: 8,
+      shares: 15,
+      readTime: "5 min"
+    },
+    {
+      id: 5,
+      title: "Obras de Revitalização da Avenida Principal Iniciam Segunda",
+      summary: "Início das obras de modernização da principal avenida da cidade com nova iluminação.",
+      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      date: "2024-01-12",
+      author: "Secretaria de Obras",
+      category: "Obras",
+      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      featured: false,
+      views: 1567,
+      comments: 15,
+      shares: 22,
+      readTime: "3 min"
+    },
+    {
+      id: 6,
+      title: "Festival de Cultura Local 2024 - Programação Completa Divulgada",
+      summary: "Confira a programação do maior evento cultural da cidade com shows e oficinas.",
+      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      date: "2024-01-08",
+      author: "Secretaria de Cultura",
+      category: "Cultura",
+      image: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+      featured: false,
+      views: 2100,
+      comments: 31,
+      shares: 67,
+      readTime: "6 min"
     }
   ];
+
+  const categories = ["Todas", "Obras", "Saúde", "Educação", "Meio Ambiente", "Cultura"];
+
+  const handleSearch = (query: string, category?: string) => {
+    setSearchTerm(query);
+    if (category !== undefined) {
+      setSelectedCategory(category);
+    }
+  };
+
+  const filteredNews = news.filter(article => {
+    const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         article.summary.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = !selectedCategory || selectedCategory === "Todas" || article.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('pt-BR');
