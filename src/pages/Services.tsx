@@ -1,10 +1,11 @@
-import { Building2, FileText, CreditCard, MessageSquare, Car, Users, Heart, GraduationCap, Search, Filter } from "lucide-react";
+import { Building2, FileText, CreditCard, MessageSquare, Car, Users, Heart, GraduationCap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const Services = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -108,24 +109,11 @@ const Services = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary">
-      {/* Header */}
-      <header className="bg-card shadow-md">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-primary">Portal da Prefeitura</h1>
-            <nav className="hidden md:flex space-x-6">
-              <a href="/" className="text-foreground hover:text-primary">Início</a>
-              <a href="/services" className="text-primary font-semibold">Serviços</a>
-              <a href="/news" className="text-foreground hover:text-primary">Notícias</a>
-              <a href="/contact" className="text-foreground hover:text-primary">Contato</a>
-            </nav>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen">
+      <Header />
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-24 bg-secondary">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-foreground mb-4">Serviços Online</h1>
           <p className="text-xl text-muted-foreground mb-8">
@@ -221,6 +209,8 @@ const Services = () => {
           </div>
         )}
       </main>
+
+      <Footer />
     </div>
   );
 };

@@ -1,10 +1,11 @@
-import { Calendar, User, ArrowRight, Eye, MessageCircle, Share2, TrendingUp } from "lucide-react";
+import { Calendar, User, ArrowRight, Eye, MessageCircle, Share2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SearchBar from "@/components/SearchBar";
 import { useState } from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const News = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -124,64 +125,61 @@ const News = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary">
-      {/* Header */}
-      <header className="bg-card shadow-md">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-primary">Portal da Prefeitura</h1>
-            <nav className="hidden md:flex space-x-6">
-              <a href="/" className="text-foreground hover:text-primary">Início</a>
-              <a href="/services" className="text-foreground hover:text-primary">Serviços</a>
-              <a href="/news" className="text-primary font-semibold">Notícias</a>
-              <a href="/contact" className="text-foreground hover:text-primary">Contato</a>
-            </nav>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen">
+      <Header />
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-24 bg-secondary">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-foreground mb-4">Notícias e Avisos</h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl text-muted-foreground mb-8">
             Fique por dentro das principais novidades da nossa cidade
           </p>
+
+          <SearchBar 
+            onSearch={handleSearch}
+            placeholder="Buscar notícias..."
+            categories={categories}
+          />
         </div>
 
         {/* Featured News */}
-        {news.filter(item => item.featured).map((item) => (
+        {filteredNews.filter(item => item.featured).map((item) => (
           <Card key={item.id} className="news-card mb-8 overflow-hidden">
             <div className="md:flex">
-              <div className="md:w-1/3">
+              <div className="md:w-1/2">
                 <img
                   src={item.image}
                   alt={item.title}
                   className="w-full h-64 md:h-full object-cover"
                 />
               </div>
-              <div className="md:w-2/3 p-6">
+              <div className="md:w-1/2 p-8">
                 <div className="flex items-center gap-4 mb-4">
-                  <Badge variant="secondary">{item.category}</Badge>
-                  <Badge variant="outline">Destaque</Badge>
+                  <Badge className="bg-primary text-primary-foreground">{item.category}</Badge>
+                  <Badge variant="outline" className="border-primary text-primary">Destaque</Badge>
                 </div>
                 <CardHeader className="px-0">
-                  <CardTitle className="text-2xl mb-2">{item.title}</CardTitle>
-                  <CardDescription className="text-lg">{item.summary}</CardDescription>
+                  <CardTitle className="text-3xl mb-4">{item.title}</CardTitle>
+                  <CardDescription className="text-lg leading-relaxed">{item.summary}</CardDescription>
                 </CardHeader>
                 <CardContent className="px-0">
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                    <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-6 text-sm text-muted-foreground mb-6">
+                    <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       {formatDate(item.date)}
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
                       <User className="h-4 w-4" />
                       {item.author}
                     </div>
+                    <div className="flex items-center gap-2">
+                      <Eye className="h-4 w-4" />
+                      {item.views} visualizações
+                    </div>
                   </div>
                   <Button className="institutional-button">
-                    Ler Mais
+                    Ler Notícia Completa
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </CardContent>
@@ -192,18 +190,21 @@ const News = () => {
 
         {/* News Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {news.filter(item => !item.featured).map((item) => (
-            <Card key={item.id} className="news-card overflow-hidden">
+          {filteredNews.filter(item => !item.featured).map((item) => (
+            <Card key={item.id} className="news-card overflow-hidden hover:shadow-xl transition-shadow duration-300">
               <img
                 src={item.image}
                 alt={item.title}
                 className="w-full h-48 object-cover"
               />
               <CardHeader>
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-3">
                   <Badge variant="secondary">{item.category}</Badge>
+                  <span className="text-xs text-muted-foreground">{item.readTime}</span>
                 </div>
-                <CardTitle className="text-lg line-clamp-2">{item.title}</CardTitle>
+                <CardTitle className="text-lg line-clamp-2 hover:text-primary transition-colors">
+                  {item.title}
+                </CardTitle>
                 <CardDescription className="line-clamp-3">{item.summary}</CardDescription>
               </CardHeader>
               <CardContent>
@@ -212,16 +213,35 @@ const News = () => {
                     <Calendar className="h-4 w-4" />
                     {formatDate(item.date)}
                   </div>
+                  <div className="flex items-center gap-1">
+                    <Eye className="h-4 w-4" />
+                    {item.views}
+                  </div>
                 </div>
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full group hover:bg-primary hover:text-primary-foreground transition-colors">
                   Ler Mais
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </CardContent>
             </Card>
           ))}
         </div>
+
+        {filteredNews.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-muted-foreground text-lg">Nenhuma notícia encontrada</p>
+            <Button 
+              variant="outline" 
+              onClick={() => { setSearchTerm(""); setSelectedCategory(""); }}
+              className="mt-4"
+            >
+              Limpar Filtros
+            </Button>
+          </div>
+        )}
       </main>
+
+      <Footer />
     </div>
   );
 };

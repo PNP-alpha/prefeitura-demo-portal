@@ -6,6 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -47,24 +49,11 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-secondary">
-      {/* Header */}
-      <header className="bg-card shadow-md">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-primary">Portal da Prefeitura</h1>
-            <nav className="hidden md:flex space-x-6">
-              <a href="/" className="text-foreground hover:text-primary">Início</a>
-              <a href="/services" className="text-foreground hover:text-primary">Serviços</a>
-              <a href="/news" className="text-foreground hover:text-primary">Notícias</a>
-              <a href="/contact" className="text-primary font-semibold">Contato</a>
-            </nav>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen">
+      <Header />
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-24 bg-secondary">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-foreground mb-4">Fale Conosco</h1>
           <p className="text-xl text-muted-foreground">
@@ -231,6 +220,8 @@ const Contact = () => {
           </Card>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 };

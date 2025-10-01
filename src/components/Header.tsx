@@ -43,7 +43,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <a href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
             <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-lg">
               <Building2 className="h-6 w-6 text-primary-foreground" />
             </div>
@@ -51,7 +51,7 @@ const Header = () => {
               <h1 className="text-xl font-bold text-primary">Portal da Prefeitura</h1>
               <p className="text-xs text-muted-foreground">Cidade São Paulo</p>
             </div>
-          </div>
+          </a>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
